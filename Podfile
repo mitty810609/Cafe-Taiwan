@@ -7,4 +7,7 @@ target 'CafeTaiwan' do
 
   # Pods for CafeTaiwan
 
+  pod 'ReachabilitySwift', '~> 3'
+
+
 end

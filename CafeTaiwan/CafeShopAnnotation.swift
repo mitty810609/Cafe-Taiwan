@@ -17,6 +17,22 @@ class CafeShopAnnotation: MKPointAnnotation {
             self.coordinate = newValue
         }
     }
+    override var title: String? {
+        get {
+            return self.name
+        }
+        set {
+            self.title = newValue
+        }
+    }
+    override var subtitle: String? {
+        get {
+            return self.address
+        }
+        set {
+            self.subtitle = newValue
+        }
+    }
     
     var id = ""
     var city = ""
@@ -38,3 +54,4 @@ class CafeShopAnnotation: MKPointAnnotation {
     var open_time = ""
     
 }
+

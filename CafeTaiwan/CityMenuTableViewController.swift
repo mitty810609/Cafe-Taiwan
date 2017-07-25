@@ -52,10 +52,15 @@ class CityMenuTableViewController: UITableViewController {
         
         cell.textLabel?.text = citys[indexPath.row]
         
+        var color: UIColor!
+        
         if cell.textLabel?.text == currentCity {
-            cell.textLabel?.textColor = UIColor.gray
+            color = UIColor.red
+        } else {
+            color = UIColor.black
         }
 
+        cell.textLabel?.textColor = color
         return cell
     }
     

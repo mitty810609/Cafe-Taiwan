@@ -7,19 +7,37 @@
 //
 
 import UIKit
+import ReachabilitySwift
 
 
-class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MenuTransitionManagerDelegate, UIPopoverPresentationControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MenuTransitionManagerDelegate, UIPopoverPresentationControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UIScrollViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var cityMenuButton: UIBarButtonItem!
+    @IBOutlet weak var scrollToTopButton: UIButton!
+    
+    var loadingView = UIView()
+    var indicator = UIActivityIndicatorView()
 
     let menuTransitionManager = MenuTransitionManager()
     let urlString = "https://cafenomad.tw/api/v1.2/cafes"
     var allCafeShops = [CafeShop]()
     
-    var searchController = UISearchController(searchResultsController: nil)
+    var searchController: UISearchController!
     
+    let reachability = Reachability()!
+    var whetherReachability: Bool! {
+        willSet {
+            guard newValue else {
+                return networkDisconnected()
+            }
+        }
+        didSet {
+            if oldValue != whetherReachability {
+                getData()
+            }
+        }
+    }
     
     //  預設排序為網路穩定
     var priorityItem = "網路穩定" {
@@ -31,7 +49,11 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     //  預設為台北所相對應 Index 為 1
     var cityIndex = 1 {
+        willSet {
+            showActivityIndicator(view: view)
+        }
         didSet {
+            hideActivityIndicator(view: view)
             tableView.reloadData()
         }
     }
@@ -69,19 +91,20 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         mapViewButton.addTarget(self, action: #selector(self.presentToMapView), for: .touchUpInside)
         
         buttonContainerView.addSubview(mapViewButton)
-        
-        
         navigationItem.titleView = buttonContainerView
         
+        showActivityIndicator(view: view)
         
+        //  載入資料
         getData()
         
+        //  背景圖片
+        tableView.backgroundView = creatBackgroundView(with: tableView.frame)
         
-        //  在 view 上層插入 imageView 當作背景
-        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: "CafePhoto")
-        backgroundImage.contentMode = .scaleAspectFill
-        view.insertSubview(backgroundImage, at: 0)
+
+        
+        // 不讓 bar 為半透明
+        navigationController?.navigationBar.isTranslucent = false
         
         //  讓返回鍵無字
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
@@ -92,17 +115,81 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         //  取消分隔線
         tableView.separatorStyle = .none
         
-        
-        UINavigationBar.appearance().backgroundColor = UIColor.brown
+        //  側邊滑桿設為白色
+        tableView.indicatorStyle = .white
 
+        
+        
+        
+        //  設定回到頂點按鈕
+        scrollToTopButton.frame = CGRect(x: view.bounds.maxX * 0.78, y: view.bounds.maxY * 0.88, width: 70, height: 70)
+        scrollToTopButton.alpha = 0
+        scrollToTopButton.addTarget(self, action: #selector(scrollToTopPress), for: .touchUpInside)
+        view.addSubview(scrollToTopButton)
+        
+        
+        /*
         //  設定 SearchController
+        searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = "請輸入店名或地址..."
+        
         searchController.searchResultsUpdater = self
         //  searchBar 啟動時，內容不會轉為黯淡顏色
         searchController.dimsBackgroundDuringPresentation = false
         //  searchbar 啟動時，不要隱藏 navigationBar
         searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.tintColor = UIColor.white
+        searchController.searchBar.barTintColor = UIColor(red: 100 / 255, green: 58 / 255, blue: 44 / 255, alpha: 1)
+        
+        //  改變 searchBar 內的背景、文字、Icon顏色
+        for subview in searchController.searchBar.subviews {
+            for view in subview.subviews {
+                if view.isKind(of: UITextField.self) {
+                    let searchBarTextField = view as! UITextField
+                    
+                    //  背景
+                    searchBarTextField.backgroundColor = UIColor(red: 46 / 255, green: 31 / 255, blue: 26 / 255, alpha: 1)
+                    
+                    //  文字
+                    searchBarTextField.textColor = UIColor.white
+                    
+                    //  Placeholder
+                    searchBarTextField.attributedPlaceholder = NSAttributedString(string: "請輸入店名或地址...", attributes: [NSForegroundColorAttributeName: UIColor.white])
+                    
+                    // Icon
+                    let searchIconView = searchBarTextField.leftView as! UIImageView
+                    searchIconView.image = searchIconView.image?.withRenderingMode(.alwaysTemplate)
+                    searchIconView.tintColor = UIColor.white
+                }
+            }
+        }
+
+        // 背景顏色 ## iOS 9
+        //UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor(red: 46 / 255, green: 31 / 255, blue: 26 / 255, alpha: 1)
+        
+        //  Placeholder 顏色  ## iOS 9
+        //UILabel.appearance(whenContainedInInstancesOf: [UITextField.self]).textColor = UIColor.white
+        */
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        setSearchControllerAppearance(with: searchController)
         tableView.tableHeaderView = searchController.searchBar
+        
+        
+        // 設置 Reachability
+        reachability.whenReachable = { reachability in
+            self.whetherReachability = true
+            print("Network is connection ")
+        }
+        reachability.whenUnreachable = { reachability in
+            self.whetherReachability = false
+            print("Network is not connection ")
+        }
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Not reachable")
+        }
         
     }
     override func didReceiveMemoryWarning() {
@@ -152,12 +239,13 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.nameLabel.textColor = UIColor.white
         cell.addressLabel.textColor = UIColor.white
         cell.backgroundColor = UIColor.clear
-        
+        cell.selectionStyle = .none
         
         return cell
     }
     
-
+    // MARK: - Get Data & Parse JSON
+    
     //  取得資料
     func getData() {
         guard let url = URL(string: urlString) else {
@@ -176,6 +264,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
                 
                 //  切回主執行緒攻動 UI
                 DispatchQueue.main.async {
+                    self.hideActivityIndicator(view: self.tableView)
                     self.tableView.reloadData()
                 }
             }
@@ -261,6 +350,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         prioritySort()
     }
     
+    // MARK: - Passing data between ViewControllers
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -281,8 +371,10 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         case "priorityMenu":
             
-            let destinationController = segue.destination
+            let destinationController = segue.destination as! PriorityMenuViewController
             destinationController.popoverPresentationController?.delegate = self
+            destinationController.currentPriorityItem = priorityItem
+        
             
         case "mapView":
             
@@ -317,40 +409,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    //  手勢觸碰 snapshot dismiss
-    func dismiss() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    
-    //  告訴系統不檢查使用者裝置，無論是 iPhone 或是 ipad 都呈現 popover
-    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .none
-    }
-    
-    //  依照偏好設定做排序
-    func prioritySort() {
-        switch priorityItem {
-        case "網路穩定":
-            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.wifi > $1.wifi)})
-        case "通常有位":
-            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.seat > $1.seat)})
-        case "安靜程度":
-            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.quiet > $1.quiet)})
-        case "咖啡好喝":
-            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.tasty > $1.tasty)})
-        case "價格便宜":
-            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.cheap > $1.cheap)})
-        case "裝潢音樂":
-            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.music > $1.music)})
-        default:
-            break
-        }
-    }
-    
-    func presentToMapView() {
-        performSegue(withIdentifier: "mapView", sender: AnyObject.self)
-    }
 
     // MARK: -  Search func
     //  依照使用者輸入的字串進行過濾
@@ -373,8 +431,86 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             tableView.reloadData()
         }
     }
-
     
+    // MARK: - show & hide Indicator
+    func showActivityIndicator(view: UIView) {
+        
+        loadingView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
+        loadingView.center = CGPoint(x: view.center.x, y: view.center.y - 64)
+        loadingView.layer.cornerRadius = 10
+        loadingView.backgroundColor = UIColor.black
+        
+        indicator.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        indicator.activityIndicatorViewStyle = .whiteLarge
+        indicator.hidesWhenStopped = true
+        indicator.center = CGPoint(x: loadingView.frame.width / 2, y: loadingView.frame.height / 2)
+        
+        loadingView.addSubview(indicator)
+        view.addSubview(loadingView)
+        indicator.startAnimating()
+    }
+    func hideActivityIndicator(view: UIView) {
+        indicator.stopAnimating()
+        loadingView.removeFromSuperview()
+    }
+
+    // MARK: - Others
+    
+    //  依照偏好設定做排序
+    func prioritySort() {
+        switch priorityItem {
+        case "網路穩定":
+            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.wifi > $1.wifi)})
+        case "通常有位":
+            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.seat > $1.seat)})
+        case "安靜程度":
+            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.quiet > $1.quiet)})
+        case "咖啡好喝":
+            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.tasty > $1.tasty)})
+        case "價格便宜":
+            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.cheap > $1.cheap)})
+        case "裝潢音樂":
+            cityCafe[cityName[cityIndex]] = cityCafe[cityName[cityIndex]]?.sorted(by: {($0.music > $1.music)})
+        default:
+            break
+        }
+    }
+    
+    func presentToMapView() {
+        if whetherReachability {
+            performSegue(withIdentifier: "mapView", sender: AnyObject.self)
+        } else {
+            networkDisconnected()
+        }
+    }
+    
+    //  手勢觸碰 snapshot dismiss
+    func dismiss() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    //  告訴系統不檢查使用者裝置，無論是 iPhone 或是 ipad 都呈現 popover
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+
+        if scrollView.contentOffset.y >= 0.0 && scrollView.contentOffset.y <= 600.0 {
+            
+            
+            let value = scrollView.contentOffset.y / 600
+            scrollToTopButton.alpha = value
+            
+        } else if scrollView.contentOffset.y > 600 {
+            scrollToTopButton.alpha = 1
+        }
+
+    }
+    
+    func scrollToTopPress() {
+        self.tableView.setContentOffset(CGPoint(x: 0,y: self.tableView.contentInset.top) , animated: true)
+    }
     /*
     // MARK: - Navigation
 

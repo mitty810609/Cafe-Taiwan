@@ -17,6 +17,10 @@ class SearchView: UIViewController {
     override func viewDidLoad() {
         //  防止 tableView 上移
         self.automaticallyAdjustsScrollViewInsets = false
+        
+        view.backgroundColor = customDeepBrown()
+        
+        tableView.backgroundView = creatBackgroundView(with: tableView.frame)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -52,9 +56,18 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     }
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        cell.backgroundColor = UIColor.clear
         
         cell.textLabel?.text = searchResults[indexPath.row].name
+        cell.textLabel?.textColor = UIColor.white
         cell.detailTextLabel?.text = searchResults[indexPath.row].address
+        cell.detailTextLabel?.textColor = UIColor.white
         return cell
+    }
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
 }

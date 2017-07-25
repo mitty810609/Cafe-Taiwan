@@ -14,6 +14,7 @@
 		4930EF9B1ED68ABC00E29099 /* PriorityMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4930EF9A1ED68ABC00E29099 /* PriorityMenuViewController.swift */; };
 		4993536B1EF42F7B0045AC68 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4993536A1EF42F7B0045AC68 /* SearchView.swift */; };
 		49B29EFB1EEEB2ED0010EE31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49B29EFA1EEEB2ED0010EE31 /* Assets.xcassets */; };
+		49D618071F21E33D006170A9 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D618061F21E33D006170A9 /* Extension.swift */; };
 		49DDF7E21ED2D431004DE439 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49DDF7E11ED2D431004DE439 /* Main.storyboard */; };
 		49DDF7E51ED2ED8F004DE439 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DDF7E41ED2ED8F004DE439 /* MapKit.framework */; };
 		49DDF7E71ED2FB2B004DE439 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DDF7E61ED2FB2B004DE439 /* DetailTableViewController.swift */; };
@@ -23,9 +24,11 @@
 		49E3EFFB1ECEED8F001E3CFC /* CafeShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E3EFFA1ECEED8F001E3CFC /* CafeShop.swift */; };
 		49E3EFFD1ECF4B32001E3CFC /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E3EFFC1ECF4B32001E3CFC /* ListTableViewCell.swift */; };
 		49FD66351EE2A15D0089919C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD66341EE2A15D0089919C /* MapViewController.swift */; };
+		586BEFDD7B0AF81119C26BB9 /* Pods_CafeTaiwan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C1FB4263B01F3ED9E7FF55F /* Pods_CafeTaiwan.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C1FB4263B01F3ED9E7FF55F /* Pods_CafeTaiwan.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CafeTaiwan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4914D3671ED3F52B0063A124 /* CityMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityMenuTableViewController.swift; sourceTree = "<group>"; };
 		4914D3691ED41A5B0063A124 /* MenuTransitionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTransitionManager.swift; sourceTree = "<group>"; };
 		491A655C1EFD1BDD008739CB /* CafeShopAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CafeShopAnnotation.swift; sourceTree = "<group>"; };
@@ -33,6 +36,7 @@
 		4930EF9A1ED68ABC00E29099 /* PriorityMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriorityMenuViewController.swift; sourceTree = "<group>"; };
 		4993536A1EF42F7B0045AC68 /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		49B29EFA1EEEB2ED0010EE31 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		49D618061F21E33D006170A9 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		49DDF7E11ED2D431004DE439 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		49DDF7E41ED2ED8F004DE439 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		49DDF7E61ED2FB2B004DE439 /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
@@ -44,6 +48,8 @@
 		49E3EFFA1ECEED8F001E3CFC /* CafeShop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CafeShop.swift; sourceTree = "<group>"; };
 		49E3EFFC1ECF4B32001E3CFC /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		49FD66341EE2A15D0089919C /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		85A64B355C19007701D15C8C /* Pods-CafeTaiwan.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CafeTaiwan.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CafeTaiwan/Pods-CafeTaiwan.debug.xcconfig"; sourceTree = "<group>"; };
+		C23E6EBABDDA35B75967F86E /* Pods-CafeTaiwan.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CafeTaiwan.release.xcconfig"; path = "Pods/Target Support Files/Pods-CafeTaiwan/Pods-CafeTaiwan.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +59,7 @@
 			files = (
 				491A65611F02593A008739CB /* CoreLocation.framework in Frameworks */,
 				49DDF7E51ED2ED8F004DE439 /* MapKit.framework in Frameworks */,
+				586BEFDD7B0AF81119C26BB9 /* Pods_CafeTaiwan.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +71,7 @@
 			children = (
 				491A65601F02593A008739CB /* CoreLocation.framework */,
 				49DDF7E41ED2ED8F004DE439 /* MapKit.framework */,
+				1C1FB4263B01F3ED9E7FF55F /* Pods_CafeTaiwan.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -74,6 +82,7 @@
 				49E3EFE51ECDB0A2001E3CFC /* CafeTaiwan */,
 				49E3EFE41ECDB0A2001E3CFC /* Products */,
 				49DDF7E31ED2ED8F004DE439 /* Frameworks */,
+				8C677B0EF0E07E70C190B903 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,9 +111,19 @@
 				4993536A1EF42F7B0045AC68 /* SearchView.swift */,
 				491A655C1EFD1BDD008739CB /* CafeShopAnnotation.swift */,
 				49E3EFFA1ECEED8F001E3CFC /* CafeShop.swift */,
+				49D618061F21E33D006170A9 /* Extension.swift */,
 				49B29EFA1EEEB2ED0010EE31 /* Assets.xcassets */,
 			);
 			path = CafeTaiwan;
+			sourceTree = "<group>";
+		};
+		8C677B0EF0E07E70C190B903 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				85A64B355C19007701D15C8C /* Pods-CafeTaiwan.debug.xcconfig */,
+				C23E6EBABDDA35B75967F86E /* Pods-CafeTaiwan.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -114,9 +133,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E3EFF51ECDB0A2001E3CFC /* Build configuration list for PBXNativeTarget "CafeTaiwan" */;
 			buildPhases = (
+				39E7998C80E09B4FB0196420 /* [CP] Check Pods Manifest.lock */,
 				49E3EFDF1ECDB0A2001E3CFC /* Sources */,
 				49E3EFE01ECDB0A2001E3CFC /* Frameworks */,
 				49E3EFE11ECDB0A2001E3CFC /* Resources */,
+				F7363F63B6A00FDB4737C0FA /* [CP] Embed Pods Frameworks */,
+				D680BE0854152BC87FA07564 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -180,6 +202,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		39E7998C80E09B4FB0196420 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D680BE0854152BC87FA07564 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CafeTaiwan/Pods-CafeTaiwan-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F7363F63B6A00FDB4737C0FA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CafeTaiwan/Pods-CafeTaiwan-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		49E3EFDF1ECDB0A2001E3CFC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -193,6 +263,7 @@
 				49FD66351EE2A15D0089919C /* MapViewController.swift in Sources */,
 				4914D3681ED3F52B0063A124 /* CityMenuTableViewController.swift in Sources */,
 				49E3EFF91ECDBC1E001E3CFC /* ListViewController.swift in Sources */,
+				49D618071F21E33D006170A9 /* Extension.swift in Sources */,
 				4914D36A1ED41A5B0063A124 /* MenuTransitionManager.swift in Sources */,
 				49E3EFE71ECDB0A2001E3CFC /* AppDelegate.swift in Sources */,
 				4993536B1EF42F7B0045AC68 /* SearchView.swift in Sources */,
@@ -308,6 +379,7 @@
 		};
 		49E3EFF61ECDB0A2001E3CFC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 85A64B355C19007701D15C8C /* Pods-CafeTaiwan.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSET_PACK_MANIFEST_URL_PREFIX = "";
@@ -323,6 +395,7 @@
 		};
 		49E3EFF71ECDB0A2001E3CFC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C23E6EBABDDA35B75967F86E /* Pods-CafeTaiwan.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSET_PACK_MANIFEST_URL_PREFIX = "";

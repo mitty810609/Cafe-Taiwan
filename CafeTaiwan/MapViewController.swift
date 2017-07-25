@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import ReachabilitySwift
 
 class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
@@ -43,8 +44,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     var searchController: UISearchController!
     var allCafeShops: [CafeShop]!
     
+    
     var currentLocation: CLLocation?
+    var userOnCenterCoordinate: CLLocationCoordinate2D?
     var currentAnnotation: CafeShopAnnotation?
+    
+    let reachability = Reachability()!
     
     
     var cityIndex: Int!
@@ -100,18 +105,34 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         searchController = UISearchController(searchResultsController: searchTable)
         searchController.searchResultsUpdater = searchTable
+        /*
         searchController.searchBar.placeholder = "請輸入店名或地址..."
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.barTintColor = UIColor(red: 100 / 255, green: 58 / 255, blue: 44 / 255, alpha: 1)
+        */
+        setSearchControllerAppearance(with: searchController)
         searchController.searchBar.sizeToFit()
         searchBarView.addSubview(searchController.searchBar)
-
+ 
     
-        //navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.isTranslucent = false
         self.cafeShopTranformAnnotation()
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        // 設置 Reachability
+        reachability.whenUnreachable = { reachability in
+            DispatchQueue.main.async {
+                self.networkDisconnected()
+            }
+        }
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Not reachable")
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -157,6 +178,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     
     @IBAction func closeDetailButtonPress() {
         animateOut()
+        currentAnnotation = nil
     }
     
     @IBAction func getDirectionButtonPress() {
@@ -191,7 +213,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func setMapRegionWithSpan(coordinate: CLLocationCoordinate2D) {
-        let span = MKCoordinateSpanMake(0.01, 0.01)
+        let span = MKCoordinateSpanMake(0.001, 0.001)
         //0.001
         let region = MKCoordinateRegion(center: coordinate, span: span)
         mapView.setRegion(region, animated: true)
@@ -433,21 +455,51 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         currentLocation = locations[0]
+        
+        if UserDefaults.standard.object(forKey: "first") == nil || UserDefaults.standard.object(forKey: "first") as! Int != 1 {
+            
+            setMapRegionWithSpan(coordinate: currentLocation!.coordinate)
+            
+            UserDefaults.standard.set(1, forKey: "first")
+            UserDefaults.standard.synchronize()
+        }
     }
     func getUserLocation() {
+        
         checkAuthStatus()
         if let currentLocation = currentLocation{
-            setMapRegionWithSpan(coordinate: currentLocation.coordinate)
-            navigationItem.rightBarButtonItem?.image = UIImage(named: "OnMapCenter")
+           // setMapRegionWithSpan(coordinate: currentLocation.coordinate)
+            userOnCenterCoordinate = currentLocation.coordinate
+            setMapRegionWithSpan(coordinate: mapView.userLocation.coordinate)
         }
+        //mapView.setCenter(mapView.userLocation.coordinate, animated: true)
+        //navigationItem.rightBarButtonItem?.image = UIImage(named: "OnMapCenter")
     }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         
-        //  偵測 userLocation 是否在目前 mapview 可視範圍
-        if mapView.isUserLocationVisible == false {
+    /*
+        guard let userOnCenter = userOnCenterCoordinate else { return }
+        if mapView.region.center.latitude != userOnCenter.latitude &&
+            mapView.region.center.longitude != userOnCenter.longitude {
+            
             navigationItem.rightBarButtonItem?.image = UIImage(named: "FindUserLocation")
+        } else {
+            navigationItem.rightBarButtonItem?.image = UIImage(named: "OnMapCenter")
+    
         }
+    */
+        //  偵測 userLocation 是否在目前 mapview 可視範圍
+/*        if mapView.isUserLocationVisible == false {
+            navigationItem.rightBarButtonItem?.image = UIImage(named: "FindUserLocation")
+        } else {
+            navigationItem.rightBarButtonItem?.image = UIImage(named: "OnMapCenter")
+        }
+*/        
+        //navigationItem.rightBarButtonItem?.image = UIImage(named: "FindUserLocation")
+//        if mapView.userLocation.coordinate.latitude != mapView.center. {
+//            navigationItem.rightBarButtonItem?.image = UIImage(named: "FindUserLocation")
+//        }
     }
     
  

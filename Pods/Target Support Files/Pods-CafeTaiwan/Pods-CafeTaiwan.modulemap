@@ -1,0 +1,6 @@
+framework module Pods_CafeTaiwan {
+  umbrella header "Pods-CafeTaiwan-umbrella.h"
+
+  export *
+  module * { export * }
+}

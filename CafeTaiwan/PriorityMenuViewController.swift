@@ -13,11 +13,19 @@ class PriorityMenuViewController: UIViewController, UIPickerViewDelegate, UIPick
 
     let priorityItem = ["網路穩定", "通常有位", "安靜程度", "咖啡好喝", "價格便宜", "裝潢音樂"]
     var currentPriorityItem = ""
+    var displayRow: Int {
+        get {
+            return priorityItem.index(of: currentPriorityItem)!
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        self.pickerView.selectRow(displayRow, inComponent: 0, animated: true)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,11 +46,17 @@ class PriorityMenuViewController: UIViewController, UIPickerViewDelegate, UIPick
     }
     
     //  各列顯示的字串
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         
-        return priorityItem[row]
+        var textColor: UIColor!
+        if currentPriorityItem == priorityItem[row] {
+
+            textColor = UIColor.red
+        } else {
+            textColor = UIColor.black
+        }
+        return NSAttributedString(string: priorityItem[row], attributes: [NSForegroundColorAttributeName : textColor])
     }
-    
     //  選擇的項目
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         currentPriorityItem = priorityItem[row]

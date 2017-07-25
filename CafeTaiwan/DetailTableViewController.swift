@@ -19,6 +19,13 @@ class DetailTableViewController: UITableViewController, MKMapViewDelegate {
     @IBOutlet weak var limitedTimeLabel: UILabel!
     @IBOutlet weak var standingDeskLabel: UILabel!
     
+    @IBOutlet weak var wifiRatingImage: UIImageView!
+    @IBOutlet weak var seatRatingImage: UIImageView!
+    @IBOutlet weak var quietRatingImage: UIImageView!
+    @IBOutlet weak var tastyRatingImage: UIImageView!
+    @IBOutlet weak var cheapRatingImage: UIImageView!
+    @IBOutlet weak var musicRatingImage: UIImageView!
+    
     @IBOutlet weak var seeMoreButton: UIButton!
     @IBOutlet weak var directionButton: UIButton!
     @IBOutlet weak var officailWebsiteButton: UIButton!
@@ -36,28 +43,7 @@ class DetailTableViewController: UITableViewController, MKMapViewDelegate {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-/*
-        //  背景圖片
-        let backgroundView = UIImageView(frame: view.bounds)
-            //UIScreen.main.bounds)
-        backgroundView.image = UIImage(named: "CafePhoto")
-        backgroundView.contentMode = .scaleAspectFill
-        view.addSubview(backgroundView)
-*/
-        //  模糊效果
-/*        let blurEffect = UIBlurEffect(style: .dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = view.bounds;
-        backgroundView.addSubview(blurEffectView)
-        //view.addSubview(blurEffectView)
-*/
-        
-        //  將 backgroundView 插入 tableView
-        //tableView.insertSubview(backgroundView, at: 0)
-        //tableView.backgroundColor = UIColor.clear
-        //view.insertSubview(backgroundView, at: 0)
-        //view.addSubview(self.tableView)
-        
+
         //  取消 tableview 分隔線
         tableView.separatorStyle = .none
         
@@ -85,13 +71,6 @@ class DetailTableViewController: UITableViewController, MKMapViewDelegate {
     
     
 
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -104,6 +83,15 @@ class DetailTableViewController: UITableViewController, MKMapViewDelegate {
         
         return cafeShop.url.isEmpty ? 15: 16
     }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         let identifier = "identifier"
@@ -161,7 +149,14 @@ class DetailTableViewController: UITableViewController, MKMapViewDelegate {
             limitedTimeLabel.text = "無提供資料"
         }
 
+        //  設定評分圖片
         
+        wifiRatingImage.image = UIImage(named: "BlackStars" + String(cafeShop.wifi))
+        seatRatingImage.image = UIImage(named: "BlackStars" + String(cafeShop.seat))
+        quietRatingImage.image = UIImage(named: "BlackStars" + String(cafeShop.quiet))
+        tastyRatingImage.image = UIImage(named: "BlackStars" + String(cafeShop.tasty))
+        cheapRatingImage.image = UIImage(named: "BlackStars" + String(cafeShop.cheap))
+        musicRatingImage.image = UIImage(named: "BlackStars" + String(cafeShop.music))
     }
     @IBAction func seeMoreButtonPress() {
         loadWebsite(urlString: "https://cafenomad.tw/shop/\(cafeShop.id)")
@@ -231,27 +226,4 @@ class DetailTableViewController: UITableViewController, MKMapViewDelegate {
     }
     */
 
-}
-extension UIViewController {
-    //  使用 SFSafariController 載入網頁
-    func loadWebsite(urlString: String) {
-        if let url = URL(string: urlString) {
-            let safariController = SFSafariViewController(url: url)
-            present(safariController, animated: true, completion: nil)
-        }
-    }
-    
-    //  導航
-    func getDirection(name: String, latitude: Double?, longitude: Double?, coordinate: CLLocationCoordinate2D?) {
-        
-        let destinationCoordinate = (coordinate != nil) ? coordinate!: CLLocationCoordinate2DMake(latitude!, longitude!)
-        let placeMark = MKPlacemark(coordinate: destinationCoordinate, addressDictionary: nil)
-        let mapItem = MKMapItem(placemark: placeMark)
-        
-        //   目的地名稱
-        mapItem.name = name
-        
-        let launchOption = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
-        mapItem.openInMaps(launchOptions: launchOption)
-    }
 }

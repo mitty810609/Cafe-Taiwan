@@ -21,10 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.statusBarStyle = .lightContent
         
         //  navigation Bar 背景顏色
-        UINavigationBar.appearance().barTintColor = UIColor.brown
+        UINavigationBar.appearance().barTintColor = UIColor(red: 100 / 255, green: 58 / 255, blue: 44 / 255, alpha: 1)
         
-        //  navigation Bar
+        //  navigation Bar 上元件顏色
         UINavigationBar.appearance().tintColor = UIColor.white
+        
         
         return true
     }
