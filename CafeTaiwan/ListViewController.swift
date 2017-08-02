@@ -32,9 +32,17 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
                 return networkDisconnected()
             }
         }
+        
         didSet {
-            if oldValue != whetherReachability {
-                getData()
+            switch oldValue {
+            case nil:
+                break
+            case false:
+                if allCafeShops.isEmpty {
+                    getData()
+                }
+            default:
+                break
             }
         }
     }
@@ -128,48 +136,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.addSubview(scrollToTopButton)
         
         
-        /*
         //  設定 SearchController
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "請輸入店名或地址..."
-        
-        searchController.searchResultsUpdater = self
-        //  searchBar 啟動時，內容不會轉為黯淡顏色
-        searchController.dimsBackgroundDuringPresentation = false
-        //  searchbar 啟動時，不要隱藏 navigationBar
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.tintColor = UIColor.white
-        searchController.searchBar.barTintColor = UIColor(red: 100 / 255, green: 58 / 255, blue: 44 / 255, alpha: 1)
-        
-        //  改變 searchBar 內的背景、文字、Icon顏色
-        for subview in searchController.searchBar.subviews {
-            for view in subview.subviews {
-                if view.isKind(of: UITextField.self) {
-                    let searchBarTextField = view as! UITextField
-                    
-                    //  背景
-                    searchBarTextField.backgroundColor = UIColor(red: 46 / 255, green: 31 / 255, blue: 26 / 255, alpha: 1)
-                    
-                    //  文字
-                    searchBarTextField.textColor = UIColor.white
-                    
-                    //  Placeholder
-                    searchBarTextField.attributedPlaceholder = NSAttributedString(string: "請輸入店名或地址...", attributes: [NSForegroundColorAttributeName: UIColor.white])
-                    
-                    // Icon
-                    let searchIconView = searchBarTextField.leftView as! UIImageView
-                    searchIconView.image = searchIconView.image?.withRenderingMode(.alwaysTemplate)
-                    searchIconView.tintColor = UIColor.white
-                }
-            }
-        }
 
-        // 背景顏色 ## iOS 9
-        //UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor(red: 46 / 255, green: 31 / 255, blue: 26 / 255, alpha: 1)
-        
-        //  Placeholder 顏色  ## iOS 9
-        //UILabel.appearance(whenContainedInInstancesOf: [UITextField.self]).textColor = UIColor.white
-        */
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         setSearchControllerAppearance(with: searchController)
@@ -190,7 +158,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         } catch {
             print("Not reachable")
         }
-        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -357,11 +324,17 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         switch segue.identifier! {
         case "cityMenu":
             
-            //  在 present 過去時顯示現在的城市
-            let cityMenuTableViewController = segue.destination as! CityMenuTableViewController
-            cityMenuTableViewController.currentCity = cityMenuButton.title!
-            cityMenuTableViewController.transitioningDelegate = self.menuTransitionManager
-            menuTransitionManager.delegate = self
+            if searchController.isActive == false {
+                
+                //  在 present 過去時顯示現在的城市
+                let cityMenuTableViewController = segue.destination as! CityMenuTableViewController
+                cityMenuTableViewController.currentCity = cityMenuButton.title!
+                cityMenuTableViewController.transitioningDelegate = self.menuTransitionManager
+                menuTransitionManager.delegate = self
+                
+            } else {
+                return
+            }
             
         case "detail":
             
@@ -369,13 +342,22 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             if let row = tableView.indexPathForSelectedRow?.row {
                 destinationController.cafeShop = (searchController.isActive) ?searchResults[row]: cityCafe[cityName[cityIndex]]?[row]
             }
-        case "priorityMenu":
+        case "priorityMenu" :
             
-            let destinationController = segue.destination as! PriorityMenuViewController
-            destinationController.popoverPresentationController?.delegate = self
-            destinationController.currentPriorityItem = priorityItem
+            
+            
+            if searchController.isActive == false {
+                
+                let destinationController = segue.destination as! PriorityMenuViewController
+                
+                destinationController.currentPriorityItem = priorityItem
+                
+                destinationController.popoverPresentationController?.delegate = self
+                
+            } else {
+                return
+            }
         
-            
         case "mapView":
             
             let navigationController = segue.destination as! UINavigationController
@@ -477,7 +459,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func presentToMapView() {
-        if whetherReachability {
+        if whetherReachability! {
             performSegue(withIdentifier: "mapView", sender: AnyObject.self)
         } else {
             networkDisconnected()

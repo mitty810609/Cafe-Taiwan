@@ -15,7 +15,11 @@ class PriorityMenuViewController: UIViewController, UIPickerViewDelegate, UIPick
     var currentPriorityItem = ""
     var displayRow: Int {
         get {
-            return priorityItem.index(of: currentPriorityItem)!
+            if let row = priorityItem.index(of: currentPriorityItem) {
+                return row
+            } else {
+                return 1
+            }
         }
     }
     

@@ -125,7 +125,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="Filters" id="2sp-8f-xp3">
                             <connections>
-                                <segue destination="s2M-Hy-d3P" kind="popoverPresentation" identifier="priorityMenu" popoverAnchorBarButtonItem="2sp-8f-xp3" id="Cnl-eP-lUR">
+                                <segue destination="s2M-Hy-d3P" kind="popoverPresentation" identifier="priorityMenu" popoverAnchorBarButtonItem="2sp-8f-xp3" id="pG5-wk-eun">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
                             </connections>
@@ -692,7 +692,7 @@
         <!--Priority Menu View Controller-->
         <scene sceneID="MH2-g1-21n">
             <objects>
-                <viewController id="s2M-Hy-d3P" customClass="PriorityMenuViewController" customModule="CafeTaiwan" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="currentContext" id="s2M-Hy-d3P" customClass="PriorityMenuViewController" customModule="CafeTaiwan" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0Uq-NM-f36"/>
                         <viewControllerLayoutGuide type="bottom" id="WlS-6B-FeL"/>
@@ -709,9 +709,13 @@
                                 </connections>
                             </pickerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bHd-2F-aOj">
-                                <rect key="frame" x="42.5" y="114" width="41" height="36"/>
+                                <rect key="frame" x="0.0" y="110" width="125" height="40"/>
+                                <color key="backgroundColor" red="0.39215686274509803" green="0.22745098039215686" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="確定"/>
+                                <state key="normal" title="確定">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
                                     <segue destination="RgH-4q-73f" kind="unwind" identifier="unwindPriorityMenu" unwindAction="unwindToHomeWithSegue:" id="v8x-h8-YXh"/>
                                 </connections>
@@ -721,13 +725,18 @@
                         <constraints>
                             <constraint firstItem="h4x-tj-C5y" firstAttribute="leading" secondItem="nE1-9R-N1u" secondAttribute="leading" id="J2z-lN-ef3"/>
                             <constraint firstAttribute="trailing" secondItem="h4x-tj-C5y" secondAttribute="trailing" id="OOC-bN-qMA"/>
-                            <constraint firstItem="bHd-2F-aOj" firstAttribute="centerX" secondItem="nE1-9R-N1u" secondAttribute="centerX" id="XsA-iK-W8d"/>
-                            <constraint firstItem="WlS-6B-FeL" firstAttribute="top" secondItem="bHd-2F-aOj" secondAttribute="bottom" id="Y5k-JM-kVT"/>
+                            <constraint firstItem="bHd-2F-aOj" firstAttribute="top" secondItem="h4x-tj-C5y" secondAttribute="bottom" id="eu9-Zn-1hZ"/>
                             <constraint firstItem="h4x-tj-C5y" firstAttribute="top" secondItem="nE1-9R-N1u" secondAttribute="top" id="k50-A6-bNA"/>
                             <constraint firstItem="WlS-6B-FeL" firstAttribute="top" secondItem="h4x-tj-C5y" secondAttribute="bottom" constant="40" id="kRg-u5-zDs"/>
+                            <constraint firstItem="WlS-6B-FeL" firstAttribute="top" secondItem="bHd-2F-aOj" secondAttribute="bottom" id="ksT-Kq-NKa"/>
+                            <constraint firstItem="bHd-2F-aOj" firstAttribute="centerX" secondItem="nE1-9R-N1u" secondAttribute="centerX" id="l0m-C9-5j4"/>
+                            <constraint firstItem="bHd-2F-aOj" firstAttribute="leading" secondItem="nE1-9R-N1u" secondAttribute="leading" id="msX-Lj-eKs"/>
+                            <constraint firstAttribute="trailing" secondItem="bHd-2F-aOj" secondAttribute="trailing" id="qFB-N1-PN9"/>
                         </constraints>
                     </view>
                     <value key="contentSizeForViewInPopover" type="size" width="125" height="150"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="125" height="150"/>
                     <connections>
                         <outlet property="pickerView" destination="h4x-tj-C5y" id="w2S-Lp-WLe"/>
                     </connections>
@@ -735,7 +744,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TO9-KL-cM5" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="RgH-4q-73f" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5.5999999999999996" y="681.85907046476768"/>
+            <point key="canvasLocation" x="-28" y="557.72113943028489"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="263-Gz-wS4">

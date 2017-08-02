@@ -391,39 +391,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
             officailWebsiteButton.removeFromSuperview()
         }
     }
-    /*
-    //  防止資料轉換 Bug
-    func checkFormat(number: Double) -> String {
-        
-        switch number {
-        case 0.0:
-            return "0.0"
-        case 0.5:
-            return "1.0"
-        case 1.0:
-            return "1.0"
-        case 1.5:
-            return "1.5"
-        case 2.0:
-            return "2.0"
-        case 2.5:
-            return "2.5"
-        case 3.0:
-            return "3.0"
-        case 3.5:
-            return "3.5"
-        case 4.0:
-            return "4.0"
-        case 4.5:
-            return "4.5"
-        case 5.0:
-            return "5.0"
-        default:
-            break
-        }
-        return "unKnow"
-    }
- */
+ 
     //  確認權限
     func checkAuthStatus() {
         //  首次使用，向使用者詢問定位自身位置權限
@@ -468,38 +436,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         checkAuthStatus()
         if let currentLocation = currentLocation{
-           // setMapRegionWithSpan(coordinate: currentLocation.coordinate)
+            setMapRegionWithSpan(coordinate: currentLocation.coordinate)
             userOnCenterCoordinate = currentLocation.coordinate
-            setMapRegionWithSpan(coordinate: mapView.userLocation.coordinate)
+            //setMapRegionWithSpan(coordinate: mapView.userLocation.coordinate)
         }
-        //mapView.setCenter(mapView.userLocation.coordinate, animated: true)
-        //navigationItem.rightBarButtonItem?.image = UIImage(named: "OnMapCenter")
     }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         
-    /*
-        guard let userOnCenter = userOnCenterCoordinate else { return }
-        if mapView.region.center.latitude != userOnCenter.latitude &&
-            mapView.region.center.longitude != userOnCenter.longitude {
-            
-            navigationItem.rightBarButtonItem?.image = UIImage(named: "FindUserLocation")
-        } else {
-            navigationItem.rightBarButtonItem?.image = UIImage(named: "OnMapCenter")
-    
-        }
-    */
-        //  偵測 userLocation 是否在目前 mapview 可視範圍
-/*        if mapView.isUserLocationVisible == false {
-            navigationItem.rightBarButtonItem?.image = UIImage(named: "FindUserLocation")
-        } else {
-            navigationItem.rightBarButtonItem?.image = UIImage(named: "OnMapCenter")
-        }
-*/        
-        //navigationItem.rightBarButtonItem?.image = UIImage(named: "FindUserLocation")
-//        if mapView.userLocation.coordinate.latitude != mapView.center. {
-//            navigationItem.rightBarButtonItem?.image = UIImage(named: "FindUserLocation")
-//        }
+
     }
     
  

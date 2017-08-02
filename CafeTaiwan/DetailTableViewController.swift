@@ -47,9 +47,6 @@ class DetailTableViewController: UITableViewController, MKMapViewDelegate {
         //  取消 tableview 分隔線
         tableView.separatorStyle = .none
         
-//        seeMoreButton.frame = CGRect(x: 0, y: 0, width: 1000, height: 100)
-//        seeMoreButton.layer.cornerRadius = 10
-//        seeMoreButton.backgroundColor = UIColor.brown
         setLabelText()
         
         
@@ -94,8 +91,7 @@ class DetailTableViewController: UITableViewController, MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
-        let identifier = "identifier"
-        let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+        let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "identifier")
             annotationView.image = UIImage(named: "Bitmap")
             annotationView.canShowCallout = true
         
@@ -158,6 +154,7 @@ class DetailTableViewController: UITableViewController, MKMapViewDelegate {
         cheapRatingImage.image = UIImage(named: "BlackStars" + String(cafeShop.cheap))
         musicRatingImage.image = UIImage(named: "BlackStars" + String(cafeShop.music))
     }
+    
     @IBAction func seeMoreButtonPress() {
         loadWebsite(urlString: "https://cafenomad.tw/shop/\(cafeShop.id)")
     }
